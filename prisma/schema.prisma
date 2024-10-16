@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = "sqlserver://localhost:1433;databaseName=db-dev;user=sa;password=Tarun3997;encrypt=true;trustServerCertificate=true"
+}
+
+model Employee {
+  employee_id   Int          @id @default(autoincrement())
+  employee_name String
+  salary        Float
+  department    Department?  @relation(fields: [department_id], references: [department_id])
+  department_id Int?
+  assignments   Assignment[]
+}
+
+model Department {
+  department_id   Int        @id @default(autoincrement())
+  department_name String
+  employees       Employee[]
+}
+
+model Project {
+  project_id          Int          @id @default(autoincrement())
+  project_name        String
+  project_description String?
+  assignments         Assignment[]
+}
+
+model Assignment {
+  assignment_id     Int      @id @default(autoincrement())
+  assignment_status String
+  employee          Employee @relation(fields: [employee_id], references: [employee_id])
+  employee_id       Int
+  project           Project  @relation(fields: [project_id], references: [project_id])
+  project_id        Int
+}
+`
